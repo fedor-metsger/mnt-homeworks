@@ -206,9 +206,12 @@ fedor@fedor-Z68P-DS3:~/CODE/Netology/DevOps/mnt-homeworks/08-ansible-02-playbook
 9. Подготовьте README.md-файл по своему playbook. В нём должно быть описано: что делает playbook, какие у него есть параметры и теги.
 
 Ответ: [README.md](README.md)
+
 10. Готовый playbook выложите в свой репозиторий, поставьте тег `08-ansible-02-playbook` на фиксирующий коммит, в ответ предоставьте ссылку на него.
 
 ---
+
+Ответ: [08-ansible-02-playbook](https://github.com/fedor-metsger/mnt-homeworks/releases/tag/08-ansible-02-playbook)
 
 ### Как оформить решение задания
 
