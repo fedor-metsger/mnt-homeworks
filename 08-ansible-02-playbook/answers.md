@@ -113,22 +113,22 @@ ok: [clickhouse-01]
 
 TASK [Install clickhouse amd64 packages from internet] ***********************************************************************************************************************
 Selecting previously unselected package clickhouse-common-static.
-(Reading database ... 72003 files and directories currently installed.)
-Preparing to unpack .../clickhouse-common-static_22.3.3.44_amd64ij3070bx.deb ...
+(Reading database ... 71995 files and directories currently installed.)
+Preparing to unpack .../clickhouse-common-static_22.3.3.44_amd64mp53m2wh.deb ...
 Unpacking clickhouse-common-static (22.3.3.44) ...
 Setting up clickhouse-common-static (22.3.3.44) ...
 changed: [clickhouse-01] => (item=clickhouse-common-static)
 
 TASK [Install clickhouse noarch packages from internet] **********************************************************************************************************************
 Selecting previously unselected package clickhouse-client.
-(Reading database ... 72017 files and directories currently installed.)
-Preparing to unpack .../clickhouse-client_22.3.3.44_allqa7wvgow.deb ...
+(Reading database ... 72009 files and directories currently installed.)
+Preparing to unpack .../clickhouse-client_22.3.3.44_all11x7to5q.deb ...
 Unpacking clickhouse-client (22.3.3.44) ...
 Setting up clickhouse-client (22.3.3.44) ...
 changed: [clickhouse-01] => (item=clickhouse-client)
 Selecting previously unselected package clickhouse-server.
-(Reading database ... 72028 files and directories currently installed.)
-Preparing to unpack .../clickhouse-server_22.3.3.44_allkg4jimez.deb ...
+(Reading database ... 72022 files and directories currently installed.)
+Preparing to unpack .../clickhouse-server_22.3.3.44_allc61_4bg6.deb ...
 Unpacking clickhouse-server (22.3.3.44) ...
 Setting up clickhouse-server (22.3.3.44) ...
 Processing triggers for systemd (245.4-4ubuntu3.20) ...
@@ -141,7 +141,10 @@ changed: [clickhouse-01]
 
 TASK [Create database] *******************************************************************************************************************************************************
 FAILED - RETRYING: [clickhouse-01]: Create database (10 retries left).
-ok: [clickhouse-01]
+changed: [clickhouse-01]
+
+TASK [Create table] **********************************************************************************************************************************************************
+changed: [clickhouse-01]
 
 PLAY [Install Vector] ********************************************************************************************************************************************************
 
@@ -150,20 +153,93 @@ ok: [clickhouse-01]
 
 TASK [Install vector packages from internet] *********************************************************************************************************************************
 Selecting previously unselected package vector.
-(Reading database ... 72039 files and directories currently installed.)
-Preparing to unpack .../vector_0.30.0-1_amd64kmtlkiz6.deb ...
+(Reading database ... 72036 files and directories currently installed.)
+Preparing to unpack .../vector_0.30.0-1_amd64p220am2c.deb ...
 Unpacking vector (0.30.0-1) ...
 Setting up vector (0.30.0-1) ...
-systemd-journal:x:101:vector
+systemd-journal:x:101:
 changed: [clickhouse-01]
 
-TASK [Flush handlers] ********************************************************************************************************************************************************
+TASK [Template a config to /etc/vector/vector.toml] **************************************************************************************************************************
+--- before: /etc/vector/vector.toml
++++ after: /home/fedor/.ansible/tmp/ansible-local-823013tqenrlg/tmpb0a9efbe/vector.toml
+@@ -1,44 +1,38 @@
+-#                                    __   __  __
+-#                                    \ \ / / / /
+-#                                     \ V / / /
+-#                                      \_/  \/
+-#
+-#                                    V E C T O R
+-#                                   Configuration
+-#
+-# ------------------------------------------------------------------------------
+-# Website: https://vector.dev
+-# Docs: https://vector.dev/docs
+-# Chat: https://chat.vector.dev
+-# ------------------------------------------------------------------------------
+-
+-# Change this to use a non-default directory for Vector data storage:
+-# data_dir = "/var/lib/vector"
+-
+ # Random Syslog-formatted logs
+-[sources.dummy_logs]
+-type = "demo_logs"
+-format = "syslog"
+-interval = 1
++[sources.syslog]
++type = "file"
++#type = "demo_logs"
++include = [ "/var/log/syslog" ]
++read_from = "end"
++#format = "syslog"
++#interval = 1
+ 
+ # Parse Syslog logs
+ # See the Vector Remap Language reference for more info: https://vrl.dev
+-[transforms.parse_logs]
++[transforms.parse_syslog]
+ type = "remap"
+-inputs = ["dummy_logs"]
++inputs = ["syslog"]
+ source = '''
+ . = parse_syslog!(string!(.message))
+ '''
+ 
+ # Print parsed logs to stdout
+-[sinks.print]
+-type = "console"
+-inputs = ["parse_logs"]
+-encoding.codec = "json"
++#[sinks.print]
++#type = "console"
++#inputs = ["parse_logs"]
++#encoding.codec = "json"
+ 
+ # Vector's GraphQL API (disabled by default)
+ # Uncomment to try it out with the `vector top` command or
+ # in your browser at http://localhost:8686
+-#[api]
+-#enabled = true
+-#address = "127.0.0.1:8686"
++[api]
++enabled = true
++address = "0.0.0.0:8686"
++
++[sinks.clickhouse]
++type = "clickhouse"
++inputs = ["syslog"]
++endpoint = "http://localhost:8123"
++database = "logs"
++table = "logs"
++skip_unknown_fields = true
 
-RUNNING HANDLER [Start vector service] ***************************************************************************************************************************************
+changed: [clickhouse-01]
+
+RUNNING HANDLER [Restart vector service] *************************************************************************************************************************************
 changed: [clickhouse-01]
 
 PLAY RECAP *******************************************************************************************************************************************************************
-clickhouse-01              : ok=8    changed=5    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+clickhouse-01              : ok=10   changed=8    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
 
 fedor@fedor-Z68P-DS3:~/CODE/Netology/DevOps/mnt-homeworks/08-ansible-02-playbook$
 ```
@@ -188,6 +264,9 @@ TASK [Flush handlers] **********************************************************
 TASK [Create database] *******************************************************************************************************************************************************
 ok: [clickhouse-01]
 
+TASK [Create table] **********************************************************************************************************************************************************
+changed: [clickhouse-01]
+
 PLAY [Install Vector] ********************************************************************************************************************************************************
 
 TASK [Gathering Facts] *******************************************************************************************************************************************************
@@ -196,10 +275,11 @@ ok: [clickhouse-01]
 TASK [Install vector packages from internet] *********************************************************************************************************************************
 ok: [clickhouse-01]
 
-TASK [Flush handlers] ********************************************************************************************************************************************************
+TASK [Template a config to /etc/vector/vector.toml] **************************************************************************************************************************
+ok: [clickhouse-01]
 
 PLAY RECAP *******************************************************************************************************************************************************************
-clickhouse-01              : ok=6    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+clickhouse-01              : ok=8    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
 
 fedor@fedor-Z68P-DS3:~/CODE/Netology/DevOps/mnt-homeworks/08-ansible-02-playbook$
 ```

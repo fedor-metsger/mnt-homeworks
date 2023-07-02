@@ -34,13 +34,29 @@
       retries: 10
       delay: 3
       until: create_db.rc == 0 or create_db.rc == 82
+    - name: Create table
+      ansible.builtin.command: "clickhouse-client -q '
+        CREATE TABLE IF NOT EXISTS logs.logs (
+            apname String,
+            facility String,
+            hostname String,
+            message String,
+            msgid String,
+            procid Int,
+            severity String,
+            timestamp String,
+            version Int
+        ) ENGINE = MergeTree ORDER BY timestamp;'"
+      register: create_table
+      failed_when: create_table.rc != 0 and create_table.rc != 57
+      changed_when: create_table.rc == 0
 - name: Install Vector
   hosts: clickhouse
   handlers:
-    - name: Start vector service
+    - name: Restart vector service
       ansible.builtin.systemd:
         name: vector
-        state: started
+        state: restarted
         enabled: true
       become: true
       become_user: root
@@ -50,6 +66,16 @@
       become_user: root
       ansible.builtin.apt:
         deb: "https://packages.timber.io/vector/{{ vector_version }}/vector_{{ vector_version }}-1_amd64.deb"
-      notify: Start vector service
-    - name: Flush handlers
-      ansible.builtin.meta: flush_handlers
+      notify: Restart vector service
+    - name: Template a config to /etc/vector/vector.toml
+      become: true
+      become_user: root
+      ansible.builtin.template:
+        src: templates/vector.toml
+        dest: /etc/vector/vector.toml
+        owner: root
+        group: root
+        mode: "0644"
+      notify:
+        - Restart vector service
+
