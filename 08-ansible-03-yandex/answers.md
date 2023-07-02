@@ -781,6 +781,8 @@ fedor@fedor-Z68P-DS3:~/CODE/Netology/DevOps/mnt-homeworks/08-ansible-03-yandex$
 
 10. Готовый playbook выложите в свой репозиторий, поставьте тег `08-ansible-03-yandex` на фиксирующий коммит, в ответ предоставьте ссылку на него.
 
+Ответ: [08-ansible-03-yandex](https://github.com/fedor-metsger/mnt-homeworks/releases/tag/08-ansible-03-yandex)
+
 ---
 
 ### Как оформить решение задания
