@@ -1,0 +1,8 @@
+---
+clickhouse_version: "22.3.3.44"
+clickhouse_noarch_packages:
+  - clickhouse-client
+  - clickhouse-server
+clickhouse_amd64_packages:
+  - clickhouse-common-static
+

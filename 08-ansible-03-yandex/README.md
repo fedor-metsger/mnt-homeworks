@@ -1,27 +1,70 @@
-# Домашнее задание к занятию 3 «Использование Ansible»
 
-## Подготовка к выполнению
+# Описание решения домашнего задания 2 «Работа с Playbook»
 
-1. Подготовьте в Yandex Cloud три хоста: для `clickhouse`, для `vector` и для `lighthouse`.
-2. Репозиторий LightHouse находится [по ссылке](https://github.com/VKCOM/lighthouse).
+Playbook находится в файле [site.yml](playbook/site.yml).
 
-## Основная часть
+Inventory находится в файле [prod.yml](playbook/inventory/prod.yml).
 
-1. Допишите playbook: нужно сделать ещё один play, который устанавливает и настраивает LightHouse.
-2. При создании tasks рекомендую использовать модули: `get_url`, `template`, `yum`, `apt`.
-3. Tasks должны: скачать статику LightHouse, установить Nginx или любой другой веб-сервер, настроить его конфиг для открытия LightHouse, запустить веб-сервер.
-4. Подготовьте свой inventory-файл `prod.yml`.
-5. Запустите `ansible-lint site.yml` и исправьте ошибки, если они есть.
-6. Попробуйте запустить playbook на этом окружении с флагом `--check`.
-7. Запустите playbook на `prod.yml` окружении с флагом `--diff`. Убедитесь, что изменения на системе произведены.
-8. Повторно запустите playbook с флагом `--diff` и убедитесь, что playbook идемпотентен.
-9. Подготовьте README.md-файл по своему playbook. В нём должно быть описано: что делает playbook, какие у него есть параметры и теги.
-10. Готовый playbook выложите в свой репозиторий, поставьте тег `08-ansible-03-yandex` на фиксирующий коммит, в ответ предоставьте ссылку на него.
+Переменные находятся в файлах:
+- [playbook/group_vars/clickhouse/vars.yml](playbook/group_vars/clickhouse/vars.yml)
+- [playbook/group_vars/lighthouse/vars.yml](playbook/group_vars/lighthouse/vars.yml)
+- [playbook/group_vars/vector/vars.yml](playbook/group_vars/vector/vars.yml)
+- [playbook/group_vars/all/vars.yml](playbook/group_vars/all/vars.yml)
 
----
+Playbook устанавливает сервисы **clickhouse** и **vector**.
 
-### Как оформить решение задания
+Для установки сервиса **clickhouse** с сайта разработчика устанавливаются пакеты:
+- clickhouse-common-static
+- clickhouse-server
+- clickhouse-client
 
-Выполненное домашнее задание пришлите в виде ссылки на .md-файл в вашем репозитории.
+В конфигурационный `/etc/clickhouse-server/config.xml` файл вносится изменение,
+с тем, чтобы возможно было осуществлять подключение к **clickhouse с внешних адресов.
 
----
+После этого создаётся БД **logs**.
+Ввиду того, что доступ к СУБД появляется не сразу после запуска сервиса **clickhouse-server**,
+попытки создания БД выполняются в цикле, пока не увенчаются успехом.
+
+В заключение в БД **logs** создаётся таблица **logs**, с полями, которые позволяют загружать туда
+записи из **syslog**-а:
+```
+CREATE TABLE IF NOT EXISTS logs.logs (
+    apname String,
+    facility String,
+    hostname String,
+    message String,
+    msgid String,
+    procid Int,
+    severity String,
+    timestamp String,
+    version Int
+) ENGINE = MergeTree ORDER BY timestamp;'
+```
+
+Для установки сервиса **vector** с сайта разработчика устанавливаются пакеты:
+- vector
+
+Затем из шаблона создаётся конфигурационный файл `/etc/vector/vector.toml`,
+который содержит набор команд для загрузки данных из **syslog** в БД **clickhouse**.
+
+В качестве веб сервера используется **Apache2**. Он устанавливается с помощью команды **apt**.
+
+В завершение устанавливается **Lighthouse** из репозитория [VKCOM/lighthouse](https://github.com/VKCOM/lighthouse).
+К сожалению, в этом репозитории нет версий, поэтому устанавливается **HEAD**.
+
+Playbook использует следующие переменные:
+
+- **clickhouse_version** - требуемая версия **clickhouse**
+- **vector_version** - требуемая версия **vector**
+- **var_ansible_connection** - тип соединения ansible
+- **var_ansible_user** - имя пользователя для соединения по **ssh** протоколу
+- **var_ansible_ssh_pass**  - пароль для соединения по **ssh** протоколу
+- **var_ansible_ssh_common_args** - параметры подключения по **ssh** протоколу
+- **var_ansible_python_interpreter** - имя исполняемого файла интерпретатора **Python**
+- **var_clickhouse_host** - IP адрес хоста с **clickhouse**
+- **var_lighthouse_host** - IP адрес хоста с **lighthouse**
+- **var_vector_host** - IP адрес хоста с **vactor**
+- **var_http_port** - порт для конфигурации HTTP сервера
+- **var_html_root** - корневой каталог для документов HTTP сервера 
+
+

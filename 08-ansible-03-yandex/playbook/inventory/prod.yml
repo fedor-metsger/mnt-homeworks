@@ -1,0 +1,31 @@
+---
+clickhouse:
+  hosts:
+    clickhouse-01:
+      ansible_connection: "{{ var_ansible_connection }}"
+      ansible_host: "{{ var_clickhouse_host }}"
+      ansible_user: "{{ var_ansible_user }}"
+      ansible_ssh_pass: "{{ var_ansible_ssh_pass }}"
+      ansible_ssh_common_args: "{{ var_ansible_ssh_common_args }}"
+      ansible_python_interpreter: "{{ var_ansible_python_interpreter }}"
+
+vector:
+  hosts:
+    vector-01:
+      ansible_connection: "{{ var_ansible_connection }}"
+      ansible_host: "{{ var_vector_host }}"
+      ansible_user: "{{ var_ansible_user }}"
+      ansible_ssh_pass: "{{ var_ansible_ssh_pass }}"
+      ansible_ssh_common_args: "{{ var_ansible_ssh_common_args }}"
+      ansible_python_interpreter: "{{ var_ansible_python_interpreter }}"
+
+lighthouse:
+  hosts:
+    lighthouse-01:
+      ansible_connection: "{{ var_ansible_connection }}"
+      ansible_host: "{{ var_lighthouse_host }}"
+      ansible_user: "{{ var_ansible_user }}"
+      ansible_ssh_pass: "{{ var_ansible_ssh_pass }}"
+      ansible_ssh_common_args: "{{ var_ansible_ssh_common_args }}"
+      ansible_python_interpreter: "{{ var_ansible_python_interpreter }}"
+
