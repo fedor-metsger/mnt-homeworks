@@ -1,0 +1,14 @@
+---
+var_ansible_connection: ssh
+var_ansible_user: "user"
+var_ansible_ssh_pass: "qwe123"
+var_ansible_ssh_common_args: '-o StrictHostKeyChecking=no'
+var_ansible_python_interpreter: python3
+
+var_clickhouse_host: "192.168.1.66"
+var_lighthouse_host: "192.168.1.19"
+var_vector_host: "192.168.1.20"
+
+var_http_port: "80"
+
+
