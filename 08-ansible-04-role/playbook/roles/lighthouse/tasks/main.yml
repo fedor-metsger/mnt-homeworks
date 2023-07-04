@@ -1,0 +1,14 @@
+---
+- name: Delete /var/www/html content & directory
+  become: true
+  ansible.builtin.file:
+    state: absent
+    path: "{{ var_html_root }}"
+
+- name: Lighthouse - clone repository
+  become: true
+  ansible.builtin.git:
+    repo: 'https://github.com/VKCOM/lighthouse'
+    dest: "{{ var_html_root }}"
+    clone: true
+    update: true
