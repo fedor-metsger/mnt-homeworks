@@ -12,7 +12,7 @@
 
 
 
-Вывод команды `molecule test`:
+Вывод команды **molecule test**:
 ```
 fedor@fedor-Z68P-DS3:~/CODE/Netology/DevOps/vector-role$ molecule test
 WARNING  The scenario config file ('/home/fedor/CODE/Netology/DevOps/vector-role/molecule/default/molecule.yml') has been modified since the scenario was created. If recent changes are important, reset the scenario with 'molecule destroy' to clean up created items or 'molecule reset' to clear current configuration.
@@ -211,7 +211,7 @@ fedor@fedor-Z68P-DS3:~/CODE/Netology/DevOps/vector-role$
 
 Ответ: [verify.yml](https://github.com/fedor-metsger/vector-role/blob/main/molecule/default/verify.yml)
 
-Вывод команды `molecule verify`:
+Вывод команды **molecule verify**:
 ```
 fedor@fedor-Z68P-DS3:~/CODE/Netology/DevOps/vector-role$ molecule verify
 WARNING  Driver docker does not provide a schema.
@@ -483,7 +483,7 @@ fedor@fedor-Z68P-DS3:~/CODE/Netology/DevOps/vector-role$
 ```
 5. Добавьте новый тег на коммит с рабочим сценарием в соответствии с семантическим версионированием.
 
-Ответ: [1.1.0](https://github.com/fedor-metsger/vector-role/releases/tag/1.1.0)
+Ответ: **[1.1.0](https://github.com/fedor-metsger/vector-role/releases/tag/1.1.0)**
 
 ### Tox
 
