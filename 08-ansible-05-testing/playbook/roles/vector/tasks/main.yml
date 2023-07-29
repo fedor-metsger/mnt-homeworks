@@ -1,0 +1,19 @@
+---
+- name: Install vector packages from internet
+  become: true
+  become_user: root
+  ansible.builtin.apt:
+    deb: "https://packages.timber.io/vector/{{ vector_version }}/vector_{{ vector_version }}-1_amd64.deb"
+  notify: Restart vector service
+
+- name: Template a config to /etc/vector/vector.toml
+  become: true
+  become_user: root
+  ansible.builtin.template:
+    src: templates/vector.toml
+    dest: /etc/vector/vector.toml
+    owner: root
+    group: root
+    mode: "0644"
+  notify:
+    - Restart vector service
