@@ -43,5 +43,5 @@
 
 Ответ:
 - [playbook](https://github.com/fedor-metsger/mnt-homeworks/tree/master/08-ansible-04-role/playbook)
-- [role-lighthouse](https://github.com/fedor-metsger/lighthouse-role)
-- [role-vector](https://github.com/fedor-metsger/vector-role)
+- [lighthouse-role](https://github.com/fedor-metsger/lighthouse-role)
+- [vector-role](https://github.com/fedor-metsger/vector-role)
