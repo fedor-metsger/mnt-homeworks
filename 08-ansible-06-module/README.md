@@ -149,3 +149,7 @@ localhost                  : ok=2    changed=0    unreachable=0    failed=0    s
 fedor@fedor-Z68P-DS3:~/CODE/Netology/DevOps/ansible_collection/test$
 ```
 **Шаг 17.** В ответ необходимо прислать ссылки на collection и tar.gz архив, а также скриншоты выполнения пунктов 4, 6, 15 и 16.
+
+[my_own_namespace-yandex_cloud_elk-1.0.0.tar.gz](https://github.com/fedor-metsger/mnt-homeworks/blob/master/my_own_namespace-yandex_cloud_elk-1.0.0.tar.gz)
+
+[Collection](https://github.com/fedor-metsger/yandex_cloud_elk)
