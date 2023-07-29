@@ -1,0 +1,71 @@
+---
+- name: Install Clickhouse
+  hosts: clickhouse
+
+  vars:
+    clickhouse_version: "22.3.3.44"
+    clickhouse_listen_host:
+      - "0.0.0.0"
+    clickhouse_networks_default:
+      - "::1"
+      - "0.0.0.0"
+    clickhouse_dbs_custom:
+      - { name: logs }
+    clickhouse_users_default:
+      - { name: "user",
+          password: "password",
+          networks: { 0.0.0.0/8 },
+          profile: "default",
+          quota: "default",
+          dbs: [ logs ],
+          comment: "Test user"
+        }
+  roles:
+    - clickhouse
+
+  tasks:
+    - name: Create table
+      ansible.builtin.command: "clickhouse-client -q '
+        CREATE TABLE IF NOT EXISTS logs.logs (
+            apname String,
+            facility String,
+            hostname String,
+            message String,
+            msgid String,
+            procid Int,
+            severity String,
+            timestamp String,
+            version Int
+        ) ENGINE = MergeTree ORDER BY timestamp;'"
+      register: create_table
+      failed_when: create_table.rc != 0 and create_table.rc != 57
+      changed_when: create_table.rc == 0
+
+- name: Install Vector
+  hosts: vector
+
+  roles:
+    - vector
+
+- name: Install apache2 web server
+  hosts: lighthouse
+  become: true
+
+  tasks:
+    - name: Install Apache
+      ansible.builtin.apt:
+        name: apache2
+        update_cache: true
+        state: present
+
+    - name: "UFW - Allow HTTP on port {{ var_http_port }}"
+      community.general.ufw:
+        rule: allow
+        port: "{{ var_http_port }}"
+        proto: tcp
+
+- name: Install Lighthouse
+  hosts: lighthouse
+
+  roles:
+    - lighthouse

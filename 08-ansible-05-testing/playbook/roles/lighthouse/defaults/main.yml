@@ -1,0 +1,3 @@
+---
+var_http_port: "80"
+var_html_root: "/var/www/html"

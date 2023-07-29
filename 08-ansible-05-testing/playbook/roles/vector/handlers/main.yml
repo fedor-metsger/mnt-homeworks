@@ -1,0 +1,8 @@
+---
+- name: Restart vector service
+  ansible.builtin.systemd:
+    name: vector
+    state: restarted
+    enabled: true
+  become: true
+  become_user: root
