@@ -12,7 +12,7 @@
 6. On test -> On fix, Done.
 7. Done -> Closed, Open.
 
-
+![](PIC001.png)
 
 Остальные задачи должны проходить по упрощённому workflow:
 
@@ -21,6 +21,8 @@
 3. Done develop -> On test.
 4. On test -> On develop, Done.
 5. Done -> Closed, Open.
+
+![](PIC002.png)
 
 **Что нужно сделать**
 
