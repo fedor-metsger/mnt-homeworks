@@ -144,6 +144,8 @@ fedor@fedor-Z68P-DS3:~/CODE/Netology/DevOps/mnt-homeworks/09-ci-03-cicd/example$
 3. Проверьте, что все файлы загрузились успешно.
 4. В ответе пришлите файл `maven-metadata.xml` для этого артефекта.
 
+![](PIC004.png)
+
 ### Знакомство с Maven
 
 ### Основная часть
