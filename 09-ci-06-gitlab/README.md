@@ -60,6 +60,14 @@ deployer:
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD u91y-gitlab.gitlab.yandexcloud.net:5050
     - docker push u91y-gitlab.gitlab.yandexcloud.net:5050/fedor/test-project/hello:gitlab-$CI_COMMIT_SHORT_SHA
 ```
+Конфигурация Pipeline:
+![](PIC001.png)
+
+Отработавший **pipeline**:
+![](PIC002.png)
+
+Результат загрузки в **registry**:
+![](PIC003.png)
 
 ### Product Owner
 
