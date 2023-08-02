@@ -1,11 +1,4 @@
-# Домашнее задание к занятию 12 «GitLab»
-
-## Подготовка к выполнению
-
-1. Подготовьте к работе GitLab [по инструкции](https://cloud.yandex.ru/docs/tutorials/infrastructure-management/gitlab-containers).
-2. Создайте свой новый проект.
-3. Создайте новый репозиторий в GitLab, наполните его [файлами](./repository).
-4. Проект должен быть публичным, остальные настройки по желанию.
+# Ответы к домашнему заданию по занятию 12 «GitLab»
 
 ## Основная часть
 
@@ -16,12 +9,57 @@
 1. Образ собирается на основе [centos:7](https://hub.docker.com/_/centos?tab=tags&page=1&ordering=last_updated).
 2. Python версии не ниже 3.7.
 3. Установлены зависимости: `flask` `flask-jsonpify` `flask-restful`.
-4. Создана директория `/python_api`.
-5. Скрипт из репозитория размещён в /python_api.
-6. Точка вызова: запуск скрипта.
-7. При комите в любую ветку должен собираться docker image с форматом имени hello:gitlab-$CI_COMMIT_SHORT_SHA . Образ должен быть выложен в Gitlab registry или yandex registry.   
-8.* (задание необязательное к выполению) При комите в ветку master после сборки должен подняться pod в kubernetes. Примерный pipeline для push в kubernetes по [ссылке](https://github.com/awertoss/devops-netology/blob/main/09-ci-06-gitlab/gitlab-ci.yml).
-Если вы еще не знакомы с k8s - автоматизируйте сборку и деплой приложения в docker на виртуальной машине.
+
+Файл `requirements.txt`:
+```
+flask
+flask_restful
+flask_jsonpify
+```
+5. Создана директория `/python_api`.
+6. Скрипт из репозитория размещён в /python_api.
+7. Точка вызова: запуск скрипта.
+
+Файл `Dockerfile`:
+```
+FROM centos:7
+
+RUN yum install python3=3.10 python3-pip -y
+COPY requirements.txt requirements.txt
+RUN pip3 install -r requirements.txt
+RUN mkdir /python_api
+COPY python-api.py /python_api/python-api.py
+CMD ["python3", "/python_api/python-api.py"]``
+```
+8. При комите в любую ветку должен собираться docker image с форматом имени hello:gitlab-$CI_COMMIT_SHORT_SHA . Образ должен быть выложен в Gitlab registry или yandex registry.
+
+Файл `.gitlab-ci.yml`
+```
+stages:          # List of stages for jobs, and their order of execution
+  - build
+  - deploy
+
+default:
+  image: docker:24.0.5
+  services:
+    - docker:24.0.5-dind
+  before_script:
+    - docker info
+
+variables:
+  DOCKER_TLS_CERTDIR: "/certs"
+
+deployer:
+  stage: deploy
+  variables:
+    DOCKER_TLS_CERTDIR: ""
+  services:
+    - docker:dind 
+  script:
+    - docker build -t u91y-gitlab.gitlab.yandexcloud.net:5050/fedor/test-project/hello:gitlab-$CI_COMMIT_SHORT_SHA .
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD u91y-gitlab.gitlab.yandexcloud.net:5050
+    - docker push u91y-gitlab.gitlab.yandexcloud.net:5050/fedor/test-project/hello:gitlab-$CI_COMMIT_SHORT_SHA
+```
 
 ### Product Owner
 
