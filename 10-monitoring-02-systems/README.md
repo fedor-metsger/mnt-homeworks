@@ -64,7 +64,12 @@
     - VictoriaMetrics
     - Nagios
 
-   Ответ:
+   **Ответ:**
+   - **Prometheus** - в основном **pull** модель
+   - **TICK** - **push** модель
+   - **Zabbix** - **гибридная** модель
+   - **VictoriaMetrics** - **гибридная** модель
+   - **Nagios** - **push** модель
    
 ### 7. Склонируйте себе [репозиторий](https://github.com/influxdata/sandbox/tree/master) и запустите TICK-стэк, используя технологии docker и docker-compose. В виде решения на это упражнение приведите скриншот веб-интерфейса ПО chronograf (`http://localhost:8888`). 
 ### P.S.: если при запуске некоторые контейнеры будут падать с ошибкой - проставьте им режим `Z`, например `./data:/var/lib:Z`
