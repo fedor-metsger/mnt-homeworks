@@ -71,10 +71,11 @@
    - **VictoriaMetrics** - **гибридная** модель
    - **Nagios** - **push** модель
    
-### 7. Склонируйте себе [репозиторий](https://github.com/influxdata/sandbox/tree/master) и запустите TICK-стэк, используя технологии docker и docker-compose. В виде решения на это упражнение приведите скриншот веб-интерфейса ПО chronograf (`http://localhost:8888`). 
+### 7. Склонируйте себе [репозиторий](https://github.com/influxdata/sandbox/tree/master) и запустите TICK-стэк, используя технологии docker и docker-compose. В виде решения на это упражнение приведите скриншот веб-интерфейса ПО chronograf ([http://localhost:8888](http://localhost:8888)). 
 ### P.S.: если при запуске некоторые контейнеры будут падать с ошибкой - проставьте им режим `Z`, например `./data:/var/lib:Z`
 
-   Ответ:
+   **Ответ:**
+![](PIC001.png)
    
 ### 8. Перейдите в веб-интерфейс Chronograf (`http://localhost:8888`) и откройте вкладку `Data explorer`.
     - Нажмите на кнопку `Add a query`
@@ -87,7 +88,8 @@
 ### Для выполнения задания приведите скриншот с отображением метрик утилизации места на диске 
 (disk->host->telegraf_container_id) из веб-интерфейса.
 
-   Ответ:
+   **Ответ:**
+![](PIC002.png)
 
 ### 9. Изучите список [telegraf inputs](https://github.com/influxdata/telegraf/tree/master/plugins/inputs). Добавьте в конфигурацию telegraf следующий плагин - [docker](https://github.com/influxdata/telegraf/tree/master/plugins/inputs/docker):
 ```
@@ -113,7 +115,8 @@
 
 ### После настройке перезапустите telegraf, обновите веб интерфейс и приведите скриншотом список `measurments` в веб-интерфейсе базы telegraf.autogen . Там должны появиться метрики, связанные с docker. Факультативно можете изучить какие метрики собирает telegraf после выполнения данного задания.
 
-   Ответ:
+   **Ответ:**
+![](PIC003.png)
    
 ## Дополнительное задание (со звездочкой*) - необязательно к выполнению
 
