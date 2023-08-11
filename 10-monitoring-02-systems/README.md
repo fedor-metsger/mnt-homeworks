@@ -142,7 +142,7 @@
 
 а) работающий код python3-скрипта,
 
-   **Ответ:**
+   **Ответ:** [main.py](main.py)
 ```
 
 from __future__ import print_function
@@ -225,7 +225,58 @@ if __name__ == '__main__':
 
 б) конфигурацию cron-расписания,
 
+   **Ответ:**
+```
+* * * * * /usr/bin/python /home/fedor/CODE/Netology/DevOps/python_monitoring/main.py
+```
+
 в) пример верно сформированного 'YY-MM-DD-awesome-monitoring.log', имеющий не менее 5 записей,
+
+   **Ответ:**
+```
+[
+    {
+        "timestamp": "2023-08-11 21:42:02",
+        "util": " 12.3%",
+        "mem_total": 16339124,
+        "mem_free": 324232,
+        "mem_available": 4763560,
+        "mem_buffers": 583176
+    },
+    {
+        "timestamp": "2023-08-11 21:43:02",
+        "util": " 15.1%",
+        "mem_total": 16339124,
+        "mem_free": 631904,
+        "mem_available": 5068200,
+        "mem_buffers": 583416
+    },
+    {
+        "timestamp": "2023-08-11 21:44:02",
+        "util": " 11.6%",
+        "mem_total": 16339124,
+        "mem_free": 657276,
+        "mem_available": 5094248,
+        "mem_buffers": 583592
+    },
+    {
+        "timestamp": "2023-08-11 21:45:02",
+        "util": " 11.7%",
+        "mem_total": 16339124,
+        "mem_free": 646560,
+        "mem_available": 5085920,
+        "mem_buffers": 584232
+    },
+    {
+        "timestamp": "2023-08-11 21:46:02",
+        "util": " 10.5%",
+        "mem_total": 16339124,
+        "mem_free": 632884,
+        "mem_available": 5073992,
+        "mem_buffers": 584524
+    }
+]
+```
 
 P.S.: количество собираемых метрик должно быть не менее 4-х.
 P.P.S.: по желанию можно себя не ограничивать только сбором метрик из `/proc`.
