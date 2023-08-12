@@ -144,8 +144,6 @@
 
    **Ответ:** [main.py](main.py)
 ```
-
-from __future__ import print_function
 import time
 import json
 import os
