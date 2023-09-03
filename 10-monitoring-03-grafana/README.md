@@ -52,6 +52,10 @@
 1. **В качестве решения задания приведите листинг этого файла.**
 
 Ответ:
+
+<details>
+  <summary>Листинг dashboard.json</summary>
+  
 ```
 {
   "annotations": {
@@ -667,3 +671,4 @@
   "version": 4
 }
 ```
+</details>
