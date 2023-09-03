@@ -4,30 +4,38 @@
 
 ### Задание 1
 
-1. Используя директорию [help](./help) внутри этого домашнего задания, запустите связку prometheus-grafana.
-1. Зайдите в веб-интерфейс grafana, используя авторизационные данные, указанные в манифесте docker-compose.
-1. Подключите поднятый вами prometheus, как источник данных.
-1. Решение домашнего задания — скриншот веб-интерфейса grafana со списком подключенных Datasource.
+1. **Используя директорию [help](./help) внутри этого домашнего задания, запустите связку prometheus-grafana.**
+1. **Зайдите в веб-интерфейс grafana, используя авторизационные данные, указанные в манифесте docker-compose.**
+1. **Подключите поднятый вами prometheus, как источник данных.**
+1. **Решение домашнего задания — скриншот веб-интерфейса grafana со списком подключенных Datasource.**
 
-   Ответ:
+Ответ:
+   
    ![](PIC001.png)
 
 ## Задание 2
 
-Изучите самостоятельно ресурсы:
+**Создайте Dashboard и в ней создайте Panels:**
 
-1. [PromQL tutorial for beginners and humans](https://valyala.medium.com/promql-tutorial-for-beginners-9ab455142085).
-1. [Understanding Machine CPU usage](https://www.robustperception.io/understanding-machine-cpu-usage).
-1. [Introduction to PromQL, the Prometheus query language](https://grafana.com/blog/2020/02/04/introduction-to-promql-the-prometheus-query-language/).
+- **утилизация CPU для nodeexporter (в процентах, 100-idle);**
+- **CPULA 1/5/15;**
+- **количество свободной оперативной памяти;**
+- **количество места на файловой системе.**
 
-Создайте Dashboard и в ней создайте Panels:
+**Для решения этого задания приведите promql-запросы для выдачи этих метрик, а также скриншот получившейся Dashboard.**
 
-- утилизация CPU для nodeexporter (в процентах, 100-idle);
-- CPULA 1/5/15;
-- количество свободной оперативной памяти;
-- количество места на файловой системе.
+Ответ:
 
-Для решения этого задания приведите promql-запросы для выдачи этих метрик, а также скриншот получившейся Dashboard.
+- Для отображения загрузки ЦПУ используется запрос:  
+  `100﻿ * ﻿(﻿1﻿ - ﻿rate﻿(﻿node_cpu_seconds_total﻿{﻿mode﻿=﻿"idle"﻿}﻿[﻿1m﻿]﻿)﻿)`
+- Для отображения CPULA 1/5/15 используются метрики:  
+  **node_load1**, **node_load5**, **node_load15**
+- Для отображения количества свободной оперативной памяти используется запрос:  
+  `(node_memory_MemTotal_bytes - node_memory_Active_bytes)`
+- Для отображения количества свободного места на файловой системе используется запрос:
+  `node_filesystem_avail_bytes{mountpoint="/"}`
+
+   ![](PIC002.png)
 
 ## Задание 3
 
