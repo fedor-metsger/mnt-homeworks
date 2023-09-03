@@ -1,48 +1,31 @@
-# Домашнее задание к занятию 15 «Система сбора логов Elastic Stack»
-
-## Дополнительные ссылки
-
-При выполнении задания используйте дополнительные ресурсы:
-
-- [поднимаем elk в docker](https://www.elastic.co/guide/en/elastic-stack-get-started/current/get-started-docker.html);
-- [поднимаем elk в docker с filebeat и docker-логами](https://www.sarulabs.com/post/5/2019-08-12/sending-docker-logs-to-elasticsearch-and-kibana-with-filebeat.html);
-- [конфигурируем logstash](https://www.elastic.co/guide/en/logstash/current/configuration.html);
-- [плагины filter для logstash](https://www.elastic.co/guide/en/logstash/current/filter-plugins.html);
-- [конфигурируем filebeat](https://www.elastic.co/guide/en/beats/libbeat/5.3/config-file-format.html);
-- [привязываем индексы из elastic в kibana](https://www.elastic.co/guide/en/kibana/current/index-patterns.html);
-- [как просматривать логи в kibana](https://www.elastic.co/guide/en/kibana/current/discover.html);
-- [решение ошибки increase vm.max_map_count elasticsearch](https://stackoverflow.com/questions/42889241/how-to-increase-vm-max-map-count).
-
-В процессе выполнения в зависимости от системы могут также возникнуть не указанные здесь проблемы.
-
-Используйте output stdout filebeat/kibana и api elasticsearch для изучения корня проблемы и её устранения.
-
-## Задание повышенной сложности
-
-Не используйте директорию [help](./help) при выполнении домашнего задания.
+# Ответы на вопросы по домашнему заданию к занятию 15 «Система сбора логов Elastic Stack»
 
 ## Задание 1
 
-Вам необходимо поднять в докере и связать между собой:
+**В директории [help](./help) находится манифест docker-compose и конфигурации filebeat/logstash для быстрого 
+выполнения этого задания.**
 
-- elasticsearch (hot и warm ноды);
-- logstash;
-- kibana;
-- filebeat.
+**Результатом выполнения задания должны быть:**
 
-Logstash следует сконфигурировать для приёма по tcp json-сообщений.
+- **скриншот `docker ps` через 5 минут после старта всех контейнеров (их должно быть 5);**
+- **скриншот интерфейса kibana;**
+- **docker-compose манифест (если вы не использовали директорию help);**
+- **ваши yml-конфигурации для стека (если вы не использовали директорию help).**
 
-Filebeat следует сконфигурировать для отправки логов docker вашей системы в logstash.
+Ответ:
+```
+fedor@fedor-Z68P-DS3:~/CODE/Netology/DevOps/mnt-homeworks/10-monitoring-04-elk/help$ docker ps
+CONTAINER ID   IMAGE                    COMMAND                  CREATED       STATUS         PORTS                                                                                            NAMES
+bec085e1c777   elastic/filebeat:8.7.0   "/usr/bin/tini -- /u…"   3 hours ago   Up 5 minutes                                                                                                    filebeat
+5695f3180d04   kibana:8.7.0             "/bin/tini -- /usr/l…"   3 hours ago   Up 5 minutes   0.0.0.0:5601->5601/tcp, :::5601->5601/tcp                                                        kibana
+6a1a86d8bb84   logstash:8.7.0           "/usr/local/bin/dock…"   3 hours ago   Up 5 minutes   0.0.0.0:5044->5044/tcp, :::5044->5044/tcp, 0.0.0.0:5046->5046/tcp, :::5046->5046/tcp, 9600/tcp   logstash
+abbd0977b3ed   elasticsearch:8.7.0      "/bin/tini -- /usr/l…"   3 hours ago   Up 5 minutes   0.0.0.0:9200->9200/tcp, :::9200->9200/tcp, 9300/tcp                                              es-hot
+78b30b91c290   python:3.9-alpine        "python3 /opt/run.py"    3 hours ago   Up 5 minutes                                                                                                    some_app
+de6581887f5b   elasticsearch:8.7.0      "/bin/tini -- /usr/l…"   3 hours ago   Up 5 minutes   9200/tcp, 9300/tcp                                                                               es-warm
+fedor@fedor-Z68P-DS3:~/CODE/Netology/DevOps/mnt-homeworks/10-monitoring-04-elk/help$
+```
 
-В директории [help](./help) находится манифест docker-compose и конфигурации filebeat/logstash для быстрого 
-выполнения этого задания.
-
-Результатом выполнения задания должны быть:
-
-- скриншот `docker ps` через 5 минут после старта всех контейнеров (их должно быть 5);
-- скриншот интерфейса kibana;
-- docker-compose манифест (если вы не использовали директорию help);
-- ваши yml-конфигурации для стека (если вы не использовали директорию help).
+![](PIC001.png)
 
 ## Задание 2
 
